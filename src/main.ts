@@ -1,14 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MongooseExceptionFilter } from './filters/mongoose-exception.filter';
+import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log(new MongooseExceptionFilter());
-  app.useGlobalFilters(new MongooseExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalFilters(new MongooseExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('E-voucher NestJS API')
