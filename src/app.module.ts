@@ -12,7 +12,9 @@ import { VoucherModule } from './voucher/voucher.module';
     AuthModule,
     UserModule,
     VoucherModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/nest'),
+    MongooseModule.forRoot(
+      'mongodb+srv://nguyenphigv23:nguyenphimb091123@cluster0.qkgf4op.mongodb.net/e-voucher',
+    ),
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
