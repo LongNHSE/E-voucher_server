@@ -12,10 +12,8 @@ import { VoucherModule } from './voucher/voucher.module';
     AuthModule,
     UserModule,
     VoucherModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://nguyenphigv23:nguyenphimb091123@cluster0.qkgf4op.mongodb.net/e-voucher',
-    ),
     ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.CONNECTION_STRING),
   ],
   controllers: [AppController],
   providers: [AppService],
