@@ -18,6 +18,8 @@ async function bootstrap() {
     .addTag('nestjs')
     .build();
 
+  console.log('aa', process.env.CONNECTION_STRING);
+
   // Swagger
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
