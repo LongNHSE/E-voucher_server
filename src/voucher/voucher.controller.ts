@@ -11,7 +11,7 @@ import {
 import { Voucher } from './schema/voucher.schema';
 import { VoucherService } from './voucher.service';
 
-@Controller('voucher')
+@Controller('vouchers')
 export class VoucherController {
   constructor(private readonly voucherService: VoucherService) {}
 
