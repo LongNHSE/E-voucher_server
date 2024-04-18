@@ -12,6 +12,9 @@ export type VoucherDocument = Voucher & Document;
 })
 export class Voucher {
   @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
   code: string;
 
   @Prop({ required: true })
