@@ -2,6 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Voucher, VoucherDocument } from './schema/voucher.schema';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { uploadImage } from 'src/common/util/FirebaseUtil';
 
 @Injectable()
 export class VoucherService {
@@ -58,5 +59,9 @@ export class VoucherService {
     return await this.voucherModel
       .findByIdAndUpdate(id, { status: status }, { new: true })
       .exec();
+  }
+
+  async addVoucherImage(file: File): Promise<string> {
+    return await uploadImage(file);
   }
 }
