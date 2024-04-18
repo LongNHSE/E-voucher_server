@@ -55,4 +55,9 @@ export class VoucherController {
   async delete(@Param('id') id: string): Promise<Voucher> {
     return this.voucherService.delete(id);
   }
+
+  @Get('status')
+  async findByVoucherStatus(): Promise<Voucher[]> {
+    return this.voucherService.findByVoucherStatus();
+  }
 }
