@@ -47,4 +47,16 @@ export class VoucherService {
   async delete(id: string): Promise<Voucher> {
     return await this.voucherModel.findByIdAndDelete(id);
   }
+
+  async findByVoucherStatus(): Promise<Voucher[]> {
+    return await this.voucherModel
+      .find({ status: { $in: ['pending', 'reject'] } })
+      .exec();
+  }
+
+  async updateVoucherStatus(id: string, status: string): Promise<Voucher> {
+    return await this.voucherModel
+      .findByIdAndUpdate(id, { status: status }, { new: true })
+      .exec();
+  }
 }
