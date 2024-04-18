@@ -7,7 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalPipes(new ValidationPipe());
   // app.useGlobalFilters(new MongooseExceptionFilter());
 
@@ -28,7 +28,6 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
-
   await app.listen(8000);
 }
 
