@@ -6,6 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { VoucherModule } from './voucher/voucher.module';
+import { OtpModule } from './otp/otp.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { VoucherModule } from './voucher/voucher.module';
     VoucherModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
+    OtpModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

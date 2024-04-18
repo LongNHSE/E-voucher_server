@@ -3,22 +3,13 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UseFilters,
-  HttpException,
-  HttpStatus,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { filter } from 'rxjs';
 import { MongooseExceptionFilter } from 'src/filters/mongoose-exception.filter';
 import { AuthGuard } from '@nestjs/passport';
-import { UserDocument } from './schema/user.schema';
 
 @Controller('users')
 export class UserController {
@@ -35,7 +26,7 @@ export class UserController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   findAll() {
     return this.userService.findAll();
   }

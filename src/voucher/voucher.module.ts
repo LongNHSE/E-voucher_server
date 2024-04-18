@@ -4,6 +4,7 @@ import { VoucherService } from './voucher.service';
 import { Mongoose } from 'mongoose';
 import { Voucher, voucherSchema } from './schema/voucher.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   controllers: [VoucherController],

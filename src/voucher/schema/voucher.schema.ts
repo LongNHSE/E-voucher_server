@@ -37,6 +37,7 @@ export class Voucher {
 
   @Prop({
     required: true,
+    default: 'pending',
     enum: ['pending', 'reject', 'available', 'unavaible'],
   })
   status: string;
@@ -47,22 +48,22 @@ export class Voucher {
   @Prop({ required: true })
   endSellTime: Date;
 
-  @Prop({ required: true })
+  @Prop({})
   description: string;
 
-  @Prop({ required: true })
+  @Prop({})
   imageUrl: string;
 
-  @Prop({ required: true })
+  @Prop({ default: [] })
   condition: [string];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user' })
   host: User;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user' })
   staff: User;
 
-  @Prop({ required: true })
+  @Prop({})
   rejectReason: string;
 }
 

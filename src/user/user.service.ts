@@ -6,6 +6,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
+  checkExistedEmail(email: string) {
+    return this.userModel.findOne({
+      email: email,
+    });
+  }
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async findAll(): Promise<User[]> {
