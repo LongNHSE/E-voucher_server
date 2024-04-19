@@ -25,20 +25,14 @@ export class AuthDTO {
   @IsString()
   password: string;
 
-  @IsNotEmpty()
-  @IsString()
   avatar: string;
 
-  @IsNotEmpty()
-  @IsString()
   status: string;
 
   @IsNotEmpty()
   @IsString()
   phone: string;
 
-  @IsNotEmpty()
-  @IsString()
   role: string;
 
   refreshToken: string;
