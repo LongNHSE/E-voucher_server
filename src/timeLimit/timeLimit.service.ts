@@ -13,12 +13,15 @@ export class TimeLimitService {
   async findAll(): Promise<TimeLimit[]> {
     return await this.timeLimitModel.find().exec();
   }
+  async find(duration: number): Promise<TimeLimit[]> {
+    return await this.timeLimitModel.find({ duration }).exec();
+  }
   async create(timeLimit: TimeLimit): Promise<TimeLimit> {
     return await new this.timeLimitModel(timeLimit).save();
   }
-  async update(id: string, timeLimit: TimeLimit): Promise<TimeLimit> {
-    return await this.timeLimitModel.findByIdAndUpdate(id, timeLimit, {
-      new: true,
-    });
+  async update(id: string, isActive: boolean): Promise<TimeLimit> {
+    return await this.timeLimitModel
+      .findByIdAndUpdate(id, { isActive }, { new: true })
+      .exec();
   }
 }

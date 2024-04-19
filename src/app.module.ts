@@ -8,12 +8,16 @@ import { ConfigModule } from '@nestjs/config';
 import { VoucherModule } from './voucher/voucher.module';
 import { OtpModule } from './otp/otp.module';
 import { MailModule } from './mail/mail.module';
+import { TimeLimitModule } from './timeLimit/timeLimit.module';
+import { ReportTypeModule } from './reportType/reportType.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     VoucherModule,
+    TimeLimitModule,
+    ReportTypeModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
     OtpModule,

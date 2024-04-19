@@ -10,8 +10,9 @@ import {
 } from '@nestjs/common';
 import { Voucher } from './schema/voucher.schema';
 import { VoucherService } from './voucher.service';
+import { ResponseObject } from 'src/common/ResponseObject';
 
-@Controller('voucher')
+@Controller('vouchers')
 export class VoucherController {
   constructor(private readonly voucherService: VoucherService) {}
 
@@ -31,6 +32,18 @@ export class VoucherController {
   ): Promise<Voucher[]> {
     const { name, code, status, host, staff } = query;
     return this.voucherService.search(name, code, status, host, staff);
+  }
+
+  @Post('status')
+  async findByVoucherStatus(
+    @Body('status') statuses: string[],
+  ): Promise<ResponseObject> {
+    const vouchers: Voucher[] =
+      await this.voucherService.findByVoucherStatus(statuses);
+    if (vouchers.length === 0) {
+      return new ResponseObject('404', 'No vouchers found', []);
+    }
+    return new ResponseObject('200', 'Success', vouchers);
   }
 
   @Get(':id')
@@ -54,10 +67,5 @@ export class VoucherController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Voucher> {
     return this.voucherService.delete(id);
-  }
-
-  @Get('status')
-  async findByVoucherStatus(): Promise<Voucher[]> {
-    return this.voucherService.findByVoucherStatus();
   }
 }
