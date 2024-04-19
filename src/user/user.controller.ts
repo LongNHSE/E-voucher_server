@@ -3,25 +3,20 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UseFilters,
-  HttpException,
-  HttpStatus,
-  UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { filter } from 'rxjs';
 import { MongooseExceptionFilter } from 'src/filters/mongoose-exception.filter';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @UseFilters(MongooseExceptionFilter)
   async create(@Body() createUserDto: CreateUserDto) {
     // throw new HttpException('This is a test errorr', HttpStatus.CREATED);
     // throw new UnauthorizedException(
@@ -31,6 +26,7 @@ export class UserController {
   }
 
   @Get()
+  // @UseGuards(AuthGuard('jwt'))
   findAll() {
     return this.userService.findAll();
   }

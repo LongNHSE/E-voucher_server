@@ -36,6 +36,9 @@ export class User {
 
   @Prop({ unique: true })
   phone: string;
+
+  @Prop()
+  refreshToken: string;
   //   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Role' })
   //   role: string;
 }
