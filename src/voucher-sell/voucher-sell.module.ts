@@ -13,4 +13,4 @@ import { VoucherSell, voucherSellSchema } from './schema/voucher-sell.schema';
     ]),
   ],
 })
-export class VoucherModule {}
+export class VoucherSellModule {}

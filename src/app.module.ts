@@ -8,12 +8,16 @@ import { ConfigModule } from '@nestjs/config';
 import { VoucherModule } from './voucher/voucher.module';
 import { OtpModule } from './otp/otp.module';
 import { MailModule } from './mail/mail.module';
+import { VoucherSellModule } from './voucher-sell/voucher-sell.module';
+import { InvoiceModule } from './invoice/invoice.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     VoucherModule,
+    VoucherSellModule,
+    InvoiceModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
     OtpModule,

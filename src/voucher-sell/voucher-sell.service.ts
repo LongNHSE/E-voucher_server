@@ -11,6 +11,15 @@ export class voucherSellService {
   ) {}
 
   async findAll(): Promise<VoucherSell[]> {
-    return await this.voucherSellModel.find().exec();
+    return await this.voucherSellModel
+      .find()
+      .populate('userId')
+      .populate('voucherId')
+      .exec();
+  }
+
+  async create(voucherSell: VoucherSell): Promise<VoucherSell> {
+    const newVoucherSell = new this.voucherSellModel(voucherSell);
+    return await newVoucherSell.save();
   }
 }

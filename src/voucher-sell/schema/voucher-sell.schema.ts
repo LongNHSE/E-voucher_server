@@ -17,22 +17,24 @@ export class VoucherSell {
     ref: 'Voucher',
     required: true,
   })
-  voucherId: Voucher;
+  voucherId: Voucher | mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  userId: User;
+  userId: User | mongoose.Types.ObjectId;
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
-    required: true,
   })
-  giftUserId: User[];
+  giftUserId: User[] | mongoose.Types.ObjectId[];
 
   @Prop({ enum: ['pending', 'used'], default: 'pending' })
   status: string;
 
   @Prop()
   hash: string;
+
+  @Prop()
+  generateAt: Date;
 }
 
-export const voucherSellSchema = SchemaFactory.createForClass(Voucher);
+export const voucherSellSchema = SchemaFactory.createForClass(VoucherSell);
