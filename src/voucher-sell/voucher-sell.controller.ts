@@ -9,10 +9,18 @@ import {
 } from '@nestjs/common';
 import { VoucherSell } from './schema/voucher-sell.schema';
 import { voucherSellService } from './voucher-sell.service';
+import { Voucher } from 'src/voucher/schema/voucher.schema';
 
 @Controller('voucherSell')
 export class VoucherSellController {
   constructor(private readonly voucherSellService: voucherSellService) {}
+
+  @Get('voucherByUserId')
+  async findVoucherByUserId(
+    @Query('userId') userId: string,
+  ): Promise<Voucher[]> {
+    return this.voucherSellService.findVoucherByUserId(userId);
+  }
 
   @Get('search')
   async findByUserIdAndVoucherId(

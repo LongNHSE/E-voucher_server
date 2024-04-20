@@ -16,24 +16,12 @@ export class voucherSellService {
     @InjectModel(Voucher.name) private voucherModel: Model<VoucherDocument>,
   ) {}
 
-  async findAll(): Promise<VoucherSell[]> {
-    return await this.voucherSellModel
-      .find()
-      .populate('userId')
+  async findVoucherByUserId(userId: string): Promise<Voucher[]> {
+    const voucherSells = await this.voucherSellModel
+      .find({ userId })
       .populate('voucherId')
       .exec();
-  }
-
-  async create(voucherSell: VoucherSell): Promise<VoucherSell> {
-    const newVoucherSell = new this.voucherSellModel(voucherSell);
-    return await newVoucherSell.save();
-  }
-
-  async findOne(id: string): Promise<VoucherSell> {
-    return await this.voucherSellModel
-      .findById(id)
-      .populate('userId')
-      .populate('voucherId');
+    return voucherSells.map((voucherSell) => voucherSell.voucherId as Voucher);
   }
 
   async findByUserId(userId: string): Promise<VoucherSell[]> {
@@ -42,12 +30,14 @@ export class voucherSellService {
       .populate('userId')
       .populate('voucherId');
   }
+
   async findByVoucherId(voucherId: string): Promise<VoucherSell[]> {
     return await this.voucherSellModel
       .find({ voucherId })
       .populate('userId')
       .populate('voucherId');
   }
+
   async findByUserIdAndVoucherId(
     userId: string,
     voucherId: string,
@@ -59,6 +49,26 @@ export class voucherSellService {
         .find({ userId, voucherId })
         .populate('userId')
         .populate('voucherId');
+  }
+
+  async findAll(): Promise<VoucherSell[]> {
+    return await this.voucherSellModel
+      .find()
+      .populate('userId')
+      .populate('voucherId')
+      .exec();
+  }
+
+  async findOne(id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel
+      .findById(id)
+      .populate('userId')
+      .populate('voucherId');
+  }
+
+  async create(voucherSell: VoucherSell): Promise<VoucherSell> {
+    const newVoucherSell = new this.voucherSellModel(voucherSell);
+    return await newVoucherSell.save();
   }
 
   async update(id: string, voucherSell: VoucherSell): Promise<VoucherSell> {
