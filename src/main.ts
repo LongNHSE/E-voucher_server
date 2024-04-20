@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { MongooseExceptionFilter } from './filters/mongoose-exception.filter';
+// import { MongooseExceptionFilter } from './filters/mongoose-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 

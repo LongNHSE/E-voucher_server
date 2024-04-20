@@ -10,6 +10,8 @@ import { OtpModule } from './otp/otp.module';
 import { MailModule } from './mail/mail.module';
 import { VoucherSellModule } from './voucher-sell/voucher-sell.module';
 import { InvoiceModule } from './invoice/invoice.module';
+import { TimeLimitModule } from './timeLimit/timeLimit.module';
+import { ReportTypeModule } from './reportType/reportType.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { InvoiceModule } from './invoice/invoice.module';
     VoucherModule,
     VoucherSellModule,
     InvoiceModule,
+    TimeLimitModule,
+    ReportTypeModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
     OtpModule,
