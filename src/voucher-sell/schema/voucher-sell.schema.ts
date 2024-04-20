@@ -23,9 +23,9 @@ export class VoucherSell {
   userId: User | mongoose.Types.ObjectId;
 
   @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' }],
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   })
-  giftUserId: User[] | mongoose.Types.ObjectId[];
+  giftUserId: User | mongoose.Types.ObjectId;
 
   @Prop({ enum: ['pending', 'used'], default: 'pending' })
   status: string;
