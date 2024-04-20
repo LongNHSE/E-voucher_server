@@ -20,7 +20,7 @@ export class VoucherController {
     return this.voucherService.findAll();
   }
 
-  @Get()
+  @Get('search')
   async search(
     @Query() query: any,
     // name: string,
@@ -29,8 +29,17 @@ export class VoucherController {
     // host: string,
     // staff: string,
   ): Promise<Voucher[]> {
-    const { name, code, status, host, staff } = query;
-    return this.voucherService.search(name, code, status, host, staff);
+    console.log(query);
+    const { name, category, code, status, host, staff } = query;
+    console.log(name, category, code, status, host, staff);
+    return this.voucherService.search(
+      name,
+      category,
+      code,
+      status,
+      host,
+      staff,
+    );
   }
 
   @Get(':id')
