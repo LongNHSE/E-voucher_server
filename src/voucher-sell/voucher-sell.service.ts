@@ -22,4 +22,18 @@ export class voucherSellService {
     const newVoucherSell = new this.voucherSellModel(voucherSell);
     return await newVoucherSell.save();
   }
+
+  async findOne(query: any): Promise<VoucherSell> {
+    return await this.voucherSellModel.findOne(query).exec();
+  }
+
+  async findOneById(id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel.findById(id).exec();
+  }
+
+  async ScanQRCode(_id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel
+      .findByIdAndUpdate(_id, { status: 'used' }, { new: true })
+      .exec();
+  }
 }
