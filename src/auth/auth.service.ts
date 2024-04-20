@@ -27,11 +27,14 @@ export class AuthService {
     }
     const token = await this.signToken(user._id);
     const refreshToken = await this.updateRefreshToken(user._id);
+    user.password = undefined;
+    user.refreshToken = undefined;
     return {
       statusCode: 200,
       message: 'Login successfully',
       token: token,
       refreshToken: refreshToken,
+      user: user,
     };
   }
 
@@ -44,11 +47,14 @@ export class AuthService {
       const token = await this.signToken(newUser._id);
       await newUser.save();
       const refreshToken = await this.updateRefreshToken(newUser._id);
+      newUser.password = undefined;
+      newUser.refreshToken = undefined;
       return {
         statusCode: 201,
         message: 'Created successfully',
         token: token,
         refreshToken: refreshToken,
+        user: newUser,
       };
     } catch (e) {
       if (e instanceof MongoServerError) {

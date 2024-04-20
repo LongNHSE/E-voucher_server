@@ -25,20 +25,14 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @IsNotEmpty()
-  @IsString()
   avatar: string;
 
-  @IsNotEmpty()
-  @IsString()
   status: string;
 
   @IsNotEmpty()
   @IsString()
-  phoneNumber: string;
+  phone: string;
 
-  @IsNotEmpty()
-  @IsString()
   role: string;
 
   refreshToken: string;
