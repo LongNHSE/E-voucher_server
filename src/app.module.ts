@@ -10,6 +10,7 @@ import { OtpModule } from './otp/otp.module';
 import { MailModule } from './mail/mail.module';
 import { VoucherSellModule } from './voucher-sell/voucher-sell.module';
 import { InvoiceModule } from './invoice/invoice.module';
+import { VnpayController } from './vnpay/vnpay.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { InvoiceModule } from './invoice/invoice.module';
     OtpModule,
     MailModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, VnpayController],
   providers: [AppService],
 })
 export class AppModule {}

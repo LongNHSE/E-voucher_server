@@ -5,11 +5,13 @@ import {
   Body,
   UseFilters,
   UseGuards,
+  Param,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { MongooseExceptionFilter } from 'src/filters/mongoose-exception.filter';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from './schema/user.schema';
 
 @Controller('users')
 export class UserController {
@@ -29,6 +31,11 @@ export class UserController {
   // @UseGuards(AuthGuard('jwt'))
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Get('email/:email')
+  findByEmail(@Param('email') email: string): Promise<User> {
+    return this.userService.findByEmail(email);
   }
 
   // @Get(':id')
