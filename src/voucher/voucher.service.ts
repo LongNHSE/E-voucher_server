@@ -1,37 +1,46 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Voucher, VoucherDocument } from './schema/voucher.schema';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { uploadImage } from 'src/common/util/FirebaseUtil';
+import { User, UserDocument } from 'src/user/schema/user.schema';
 
 @Injectable()
 export class VoucherService {
   constructor(
     @InjectModel(Voucher.name) private voucherModel: Model<VoucherDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
   async search(
     name: string,
+    category: string,
     code: string,
     status: string,
     host: string,
     staff: string,
   ): Promise<Voucher[]> {
-    return await this.voucherModel.find({
-      name: { $regex: name, $options: 'i' },
-      code: { $regex: code, $options: 'i' },
-      status: { $regex: status, $options: 'i' },
-      host: { $regex: host, $options: 'i' },
-      staff: { $regex: staff, $options: 'i' },
-    });
+    console.log(name, category, code, status, host, staff);
+    const filterQuery: FilterQuery<Voucher> = {
+      $or: [
+        {
+          name: { $regex: name || '', $options: 'i' },
+        },
+      ],
+      category: { $regex: category || '', $options: 'i' },
+      code: { $regex: code || '', $options: 'i' },
+      status: { $regex: status || '', $options: 'i' },
+    };
+    console.log(filterQuery);
+    return await this.voucherModel.find(filterQuery);
   }
 
   async findAll(): Promise<Voucher[]> {
-    return await this.voucherModel.find().exec();
+    return await this.voucherModel.find().populate('host');
   }
 
   async findOne(id: string): Promise<Voucher> {
-    return await this.voucherModel.findById(id);
+    return await this.voucherModel.findById(id).populate('host');
   }
 
   async create(voucher: Voucher): Promise<Voucher> {

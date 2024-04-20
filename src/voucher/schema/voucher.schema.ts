@@ -57,14 +57,17 @@ export class Voucher {
   @Prop({ default: [] })
   condition: [string];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   host: User;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   staff: User;
 
   @Prop({})
   rejectReason: string;
+
+  @Prop({ default: 'All' })
+  category: string;
 }
 
 export const voucherSchema = SchemaFactory.createForClass(Voucher);
