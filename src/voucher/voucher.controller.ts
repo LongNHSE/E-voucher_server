@@ -33,7 +33,7 @@ export class VoucherController {
     console.log(query);
     const { name, category, code, status, host, staff } = query;
     console.log(name, category, code, status, host, staff);
-    return this.voucherService.search(
+    return this.voucherService.searchForUser(
       name,
       category,
       code,
@@ -71,6 +71,23 @@ export class VoucherController {
     @Body() voucher: Voucher,
   ): Promise<Voucher> {
     return this.voucherService.update(id, voucher);
+  }
+
+  @Patch(':id/status')
+  async updateVoucherStatus(
+    @Param('id') id: string,
+    @Body() voucher: Voucher,
+  ): Promise<ResponseObject> {
+    const { status, rejectReason } = voucher;
+    console.log(status, rejectReason);
+    const updateVoucherStatus = await this.voucherService.updateVoucherStatus(
+      id,
+      status,
+      rejectReason || null,
+    );
+    if (!updateVoucherStatus)
+      return ResponseObject.badReqError("Can't update voucher status");
+    return ResponseObject.success(updateVoucherStatus);
   }
 
   @Delete(':id')

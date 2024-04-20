@@ -8,6 +8,8 @@ import {
   VoucherSell,
   voucherSellSchema,
 } from 'src/voucher-sell/schema/voucher-sell.schema';
+import { User, userSchema } from 'src/user/schema/user.schema';
+import { Voucher, voucherSchema } from 'src/voucher/schema/voucher.schema';
 
 @Module({
   controllers: [invoiceController],
@@ -15,6 +17,8 @@ import {
   imports: [
     MongooseModule.forFeature([
       { name: Invoice.name, schema: invoiceSchema },
+      { name: User.name, schema: userSchema },
+      { name: Voucher.name, schema: voucherSchema },
       { name: VoucherSell.name, schema: voucherSellSchema },
     ]),
   ],
