@@ -20,8 +20,6 @@ export class invoiceController {
     @Body('voucherId') voucherId: string,
     @Body('quantity') quantity: number,
   ): Promise<Invoice> {
-    console.log(userId);
-
     return this.invoiceService.purchase(userId, voucherId, quantity);
   }
 }

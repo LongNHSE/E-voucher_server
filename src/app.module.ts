@@ -12,6 +12,7 @@ import { VoucherSellModule } from './voucher-sell/voucher-sell.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { TimeLimitModule } from './timeLimit/timeLimit.module';
 import { ReportTypeModule } from './reportType/reportType.module';
+import { VnpayController } from './vnpay/vnpay.controller';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { ReportTypeModule } from './reportType/reportType.module';
     OtpModule,
     MailModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, VnpayController],
   providers: [AppService],
 })
 export class AppModule {}
