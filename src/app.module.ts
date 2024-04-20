@@ -13,6 +13,7 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { TimeLimitModule } from './timeLimit/timeLimit.module';
 import { ReportTypeModule } from './reportType/reportType.module';
 import { VnpayController } from './vnpay/vnpay.controller';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { VnpayController } from './vnpay/vnpay.controller';
     VoucherSellModule,
     InvoiceModule,
     TimeLimitModule,
+    ReportModule,
     ReportTypeModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.CONNECTION_STRING),

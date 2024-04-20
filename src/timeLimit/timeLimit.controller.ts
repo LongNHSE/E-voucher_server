@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { TimeLimitService } from './timeLimit.service';
 import { TimeLimit } from './schema/timeLimit.schema';
 import { ResponseObject } from 'src/common/ResponseObject';
@@ -10,6 +18,18 @@ export class TimeLimitController {
   async findAll(): Promise<ResponseObject> {
     // return this.timeLimitService.findAll();
     return ResponseObject.success(await this.timeLimitService.findAll());
+  }
+
+  @Get('search')
+  async findByIsActive(
+    @Query('isActive') isActive: boolean,
+  ): Promise<ResponseObject> {
+    const timeLimits: TimeLimit[] =
+      await this.timeLimitService.findByIsActive(isActive);
+    if (timeLimits.length === 0) {
+      return ResponseObject.badReqError('No time limit found');
+    }
+    return ResponseObject.success(timeLimits);
   }
 
   @Post()
