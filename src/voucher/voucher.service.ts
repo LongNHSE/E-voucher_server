@@ -4,15 +4,17 @@ import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { uploadImage } from 'src/common/util/FirebaseUtil';
 import { User, UserDocument } from 'src/user/schema/user.schema';
+import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
 
 @Injectable()
 export class VoucherService {
   constructor(
     @InjectModel(Voucher.name) private voucherModel: Model<VoucherDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(VoucherSell.name) private voucherSellModel: Model<VoucherSell>,
   ) {}
 
-  async search(
+  async searchForUser(
     name: string,
     category: string,
     code: string,
@@ -29,7 +31,7 @@ export class VoucherService {
       ],
       category: { $regex: category || '', $options: 'i' },
       code: { $regex: code || '', $options: 'i' },
-      status: { $regex: status || '', $options: 'i' },
+      status: status,
     };
     console.log(filterQuery);
     return await this.voucherModel.find(filterQuery);

@@ -33,7 +33,7 @@ export class VoucherController {
     console.log(query);
     const { name, category, code, status, host, staff } = query;
     console.log(name, category, code, status, host, staff);
-    return this.voucherService.search(
+    return this.voucherService.searchForUser(
       name,
       category,
       code,
