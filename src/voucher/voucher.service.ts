@@ -59,12 +59,23 @@ export class VoucherService {
   }
 
   async findByVoucherStatus(statuses: string[]): Promise<Voucher[]> {
-    return await this.voucherModel.find({ status: { $in: statuses } }).exec();
+    return await this.voucherModel
+      .find({ status: { $in: statuses } })
+      .populate('host')
+      .populate('staff');
   }
 
-  async updateVoucherStatus(id: string, status: string): Promise<Voucher> {
+  async updateVoucherStatus(
+    id: string,
+    status: string,
+    rejectReason: string | null,
+  ): Promise<Voucher> {
     return await this.voucherModel
-      .findByIdAndUpdate(id, { status: status }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { status: status, rejectReason: rejectReason || null },
+        { new: true },
+      )
       .exec();
   }
 

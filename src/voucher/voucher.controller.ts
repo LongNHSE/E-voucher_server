@@ -73,6 +73,23 @@ export class VoucherController {
     return this.voucherService.update(id, voucher);
   }
 
+  @Patch(':id/status')
+  async updateVoucherStatus(
+    @Param('id') id: string,
+    @Body() voucher: Voucher,
+  ): Promise<ResponseObject> {
+    const { status, rejectReason } = voucher;
+    console.log(status, rejectReason);
+    const updateVoucherStatus = await this.voucherService.updateVoucherStatus(
+      id,
+      status,
+      rejectReason || null,
+    );
+    if (!updateVoucherStatus)
+      return ResponseObject.badReqError("Can't update voucher status");
+    return ResponseObject.success(updateVoucherStatus);
+  }
+
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Voucher> {
     return this.voucherService.delete(id);

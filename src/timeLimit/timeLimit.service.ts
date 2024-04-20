@@ -16,6 +16,9 @@ export class TimeLimitService {
   async find(duration: number): Promise<TimeLimit[]> {
     return await this.timeLimitModel.find({ duration }).exec();
   }
+  async findByIsActive(isActive: boolean): Promise<TimeLimit[]> {
+    return await this.timeLimitModel.find({ isActive }).exec();
+  }
   async create(timeLimit: TimeLimit): Promise<TimeLimit> {
     return await new this.timeLimitModel(timeLimit).save();
   }
