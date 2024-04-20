@@ -11,6 +11,9 @@ export type TimeLimitDocument = TimeLimit & Document;
 })
 export class TimeLimit {
   @Prop({ required: true })
-  name: number;
+  duration: number;
+
+  @Prop({ required: true })
+  isActive: boolean;
 }
 export const TimeLimitSchema = SchemaFactory.createForClass(TimeLimit);

@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { Voucher } from './schema/voucher.schema';
 import { VoucherService } from './voucher.service';
+import { ResponseObject } from 'src/common/ResponseObject';
 
 @Controller('vouchers')
 export class VoucherController {
@@ -42,6 +43,18 @@ export class VoucherController {
     );
   }
 
+  @Post('status')
+  async findByVoucherStatus(
+    @Body('status') statuses: string[],
+  ): Promise<ResponseObject> {
+    const vouchers: Voucher[] =
+      await this.voucherService.findByVoucherStatus(statuses);
+    if (vouchers.length === 0) {
+      return ResponseObject.badReqError('No voucher found');
+    }
+    return new ResponseObject(200, 'Success', vouchers);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Voucher> {
     return this.voucherService.findOne(id);
@@ -63,10 +76,5 @@ export class VoucherController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Voucher> {
     return this.voucherService.delete(id);
-  }
-
-  @Get('status')
-  async findByVoucherStatus(): Promise<Voucher[]> {
-    return this.voucherService.findByVoucherStatus();
   }
 }
