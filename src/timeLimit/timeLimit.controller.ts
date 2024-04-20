@@ -18,12 +18,12 @@ export class TimeLimitController {
       timeLimit.duration,
     );
     if (duplicateTimeLimit.length > 0) {
-      return ResponseObject.error('Duplicate duration of time limit');
+      return ResponseObject.badReqError('Duplicate duration of time limit');
     }
     const newTimeLimit: TimeLimit =
       await this.timeLimitService.create(timeLimit);
     if (!newTimeLimit) {
-      return ResponseObject.error("Can't create time limit");
+      return ResponseObject.badReqError("Can't create time limit");
     }
     return ResponseObject.success(newTimeLimit);
   }
@@ -38,7 +38,7 @@ export class TimeLimitController {
       isActive,
     );
     if (!updatedTimeLimit) {
-      return ResponseObject.error("Can't update time limit");
+      return ResponseObject.badReqError("Can't update time limit");
     }
     return ResponseObject.success(updatedTimeLimit);
   }

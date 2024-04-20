@@ -50,9 +50,9 @@ export class VoucherController {
     const vouchers: Voucher[] =
       await this.voucherService.findByVoucherStatus(statuses);
     if (vouchers.length === 0) {
-      return new ResponseObject('404', 'No vouchers found', []);
+      return ResponseObject.badReqError('No voucher found');
     }
-    return new ResponseObject('200', 'Success', vouchers);
+    return new ResponseObject(200, 'Success', vouchers);
   }
 
   @Get(':id')
