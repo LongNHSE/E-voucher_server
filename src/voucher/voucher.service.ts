@@ -80,8 +80,4 @@ export class VoucherService {
       )
       .exec();
   }
-
-  async addVoucherImage(file: File): Promise<string> {
-    return await uploadImage(file);
-  }
 }
