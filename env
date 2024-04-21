@@ -1,0 +1,7 @@
+HASK_KEY ='asw312cfdv'
+JWT_SECRET = 'mylittlesecret'
+JWT_REFRESH_SECRET ='mylittleref'
+CONNECTION_STRING = 'mongodb+srv://nguyenphigv23:nguyenphimb091123@cluster0.qkgf4op.mongodb.net/e-voucher'
+VNP_TMNCODE=O6CCTPY3 
+VNP_HASHSECRET=YAOVGGPVHLRRUYHTZBIJOAAPOLZAYXYU
+VNP_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html

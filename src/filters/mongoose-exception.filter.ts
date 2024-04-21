@@ -6,7 +6,7 @@ import {
   HttpStatus,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { MongoServerError, MongoError } from 'mongodb';
+import { MongoError } from 'mongodb';
 
 @Catch()
 export class MongooseExceptionFilter implements ExceptionFilter {
@@ -30,6 +30,7 @@ export class MongooseExceptionFilter implements ExceptionFilter {
         path: request.url,
         errorType: type,
         errorMessage: message,
+        message: message || 'Internal server error',
       });
     };
     console.log(exception);

@@ -1,6 +1,8 @@
-import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
-import { User } from '../../user/shcema/user.schema';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
+import { ReportType } from 'src/reportType/schema/reportType.schema';
+import { User } from 'src/user/schema/user.schema';
+import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
 
 export type ReportDocument = Report & Document;
 @Schema({
@@ -11,8 +13,19 @@ export type ReportDocument = Report & Document;
   timestamps: true,
 })
 export class Report {
-  //   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true })
-  //   voucherSell: voucherSell;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'voucherSell',
+    required: true,
+  })
+  voucherSell: VoucherSell;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'reportType',
+    required: true,
+  })
+  reportType: ReportType;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true })
   user: User;
@@ -24,7 +37,6 @@ export class Report {
   userMessage: string;
 
   @Prop({ required: true })
-  staffMessage: [string];
+  staffMessage: string;
 }
-
-export const reportSchema = SchemaFactory.createForClass(Report);
+export const ReportSchema = SchemaFactory.createForClass(Report);
