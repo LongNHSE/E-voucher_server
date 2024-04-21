@@ -39,6 +39,7 @@ export class AuthController {
   @Get('logout')
   @UseGuards(AuthGuard('jwt'))
   async logout(@GetUser() user: any) {
+    console.log(user);
     if (user.userId) {
       return this.authService.logout(user.userId);
     } else {

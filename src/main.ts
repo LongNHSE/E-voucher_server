@@ -8,7 +8,11 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  app.enableCors();
+  // app.enableCors({
+  //   origin: '*',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   allowedHeaders: 'Content-Type, Accept',
+  // });
   app.useGlobalPipes(new ValidationPipe());
   // app.useGlobalFilters(new MongooseExceptionFilter());
 
@@ -29,7 +33,7 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
-  await app.listen(8000);
+  await app.listen(8000, '0.0.0.0');
 }
 
 bootstrap();

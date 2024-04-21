@@ -71,6 +71,23 @@ export class voucherSellService {
     return await newVoucherSell.save();
   }
 
+  async findOneById(id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel.findById(id).exec();
+  }
+
+  async ScanQRCode(_id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel
+      .findByIdAndUpdate(_id, { status: 'used' }, { new: true })
+      .exec();
+  }
+
+  async generateQRCode(_id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel
+      .findByIdAndUpdate(_id, { generateAt: new Date() }, { new: true })
+      .populate('voucherId')
+      .exec();
+  }
+
   async update(id: string, voucherSell: VoucherSell): Promise<VoucherSell> {
     return await this.voucherSellModel.findByIdAndUpdate(id, voucherSell, {
       new: true,
