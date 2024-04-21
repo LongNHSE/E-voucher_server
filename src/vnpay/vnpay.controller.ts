@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import * as crypto from 'crypto';
 import * as querystring from 'qs';
@@ -73,50 +73,44 @@ export class VnpayController {
     return vnpUrl;
   }
 
-  // @Post('get-payment')
-  // async getPaymentStatus(@Req() req: Request, @Body() body): Promise<string> {
-  //   const { id } = req.params;
+  @Post('get-payment')
+  async getPaymentStatus(@Req() req: Request, @Body() body): Promise<string> {
+    console.log('-----------Request query:', req.query);
+    console.log('Request body:', body);
 
-  //   let vnp_Params = req.query;
+    let vnp_Params = req.query;
 
-  //   const secureHash = vnp_Params['vnp_SecureHash'];
+    const secureHash = vnp_Params['vnp_SecureHash'];
 
-  //   delete vnp_Params['vnp_SecureHash'];
-  //   delete vnp_Params['vnp_SecureHashType'];
+    delete vnp_Params['vnp_SecureHash'];
+    delete vnp_Params['vnp_SecureHashType'];
 
-  //   vnp_Params = this.sortObject(vnp_Params);
+    vnp_Params = this.sortObject(vnp_Params);
 
-  //   const tmnCode = process.env.VNP_TMNCODE;
-  //   const secretKey = process.env.VNP_HASHSECRET;
+    const tmnCode = process.env.VNP_TMNCODE;
+    const secretKey = process.env.VNP_HASHSECRET;
 
-  //   const signData = querystring.stringify(vnp_Params, { encode: false });
-  //   const hmac = crypto.createHmac('sha512', secretKey);
-  //   const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    const signData = querystring.stringify(vnp_Params, { encode: false });
+    const hmac = crypto.createHmac('sha512', secretKey);
+    const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
 
-  //   //   console.log("Request query:", signData);
-  //   console.log('Generated signature:', signed);
-  //   console.log('Received signature:', secureHash);
+    //   console.log("Request query:", signData);
+    console.log('Generated signature:', signed);
+    console.log('Received signature:', secureHash);
 
-  //   if (secureHash === signed) {
-  //     // Signature matched, proceed with processing the payment
+    if (secureHash === signed) {
+      // Signature matched, proceed with processing the payment
 
-  //     if (req.query.vnp_TransactionStatus == '00') {
-  //     } else {
-  //     }
-  //   } else {
-  //   }
-  //   // Signature mismatch, indicating potential tampering
-  // }
-
-  // Function to sort the object keys
-  //   sortObject(obj: any) {
-  //     const sortedKeys = Object.keys(obj).sort();
-  //     const sortedObj: any = {};
-  //     sortedKeys.forEach((key) => {
-  //       sortedObj[key] = obj[key];
-  //     });
-  //     return sortedObj;
-  //   }
+      if (req.query.vnp_TransactionStatus == '00') {
+        return 'Payment successful';
+      } else {
+        return 'Payment failed';
+      }
+    } else {
+      return 'Signature mismatch';
+    }
+    // Signature mismatch, indicating potential tampering
+  }
 
   sortObject(obj) {
     const sorted = {};
