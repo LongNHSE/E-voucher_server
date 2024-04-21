@@ -38,6 +38,8 @@ export class VoucherService {
   }
 
   async findAll(): Promise<Voucher[]> {
+    console.log(this.voucherModel.find());
+
     return await this.voucherModel.find().populate('host');
   }
 
