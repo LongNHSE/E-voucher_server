@@ -2,16 +2,22 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Voucher } from './schema/voucher.schema';
 import { VoucherService } from './voucher.service';
 import { ResponseObject } from 'src/common/ResponseObject';
-
+import { uploadImage } from 'src/common/util/FirebaseUtil';
+import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('vouchers')
 export class VoucherController {
   constructor(private readonly voucherService: VoucherService) {}
@@ -90,8 +96,23 @@ export class VoucherController {
     return ResponseObject.success(updateVoucherStatus);
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Voucher> {
-    return this.voucherService.delete(id);
+  @Post('image')
+  @UseInterceptors(FileInterceptor('image'))
+  async addImage(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000000 }),
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ): Promise<ResponseObject> {
+    console.log(file);
+    const updateVoucherImage = await uploadImage(file);
+    if (!updateVoucherImage)
+      return ResponseObject.badReqError("Can't update voucher image");
+    return ResponseObject.success(updateVoucherImage);
   }
 }

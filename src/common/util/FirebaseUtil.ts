@@ -20,9 +20,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-export const uploadImage = async (file: File, directory: string = 'images') => {
-  const fileName = Date.now();
-  const storageRef = ref(storage, `${directory}/${fileName}`);
-  await uploadBytes(storageRef, file);
-  return getDownloadURL(storageRef);
-};
+export const uploadImage = (
+  file: Express.Multer.File,
+  folder: string = 'images',
+) =>
+  new Promise((resolve, reject) => {
+    if (!file) {
+      reject(new Error('Image file is undefined'));
+    } else {
+      const fileName = Date.now();
+      const storageRef = ref(storage, `${folder}/${fileName}`);
+      if (file.mimetype.includes('image') === false) {
+        reject(new Error('File is not an image'));
+      }
+      uploadBytes(storageRef, file.buffer, { contentType: file.mimetype })
+        .then(() => {
+          console.log('Image uploaded successfully!');
+          return getDownloadURL(storageRef);
+        })
+        .then((downloadURL) => {
+          console.log('Image URL:', downloadURL);
+          resolve(downloadURL);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    }
+  });
