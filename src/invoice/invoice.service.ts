@@ -25,6 +25,7 @@ export class invoiceService {
     userId: string,
     voucherId: string,
     quantity: number,
+    giftUserId: string,
   ): Promise<Invoice> {
     const newVoucherSells: VoucherSell[] = [];
     let total = 0;
@@ -33,6 +34,10 @@ export class invoiceService {
       const newVoucherSell: VoucherSell = new this.voucherSellModel();
       newVoucherSell.userId = new mongoose.Types.ObjectId(userId);
       newVoucherSell.voucherId = new mongoose.Types.ObjectId(voucherId);
+
+      if (giftUserId) {
+        newVoucherSell.giftUserId = new mongoose.Types.ObjectId(giftUserId);
+      }
 
       const savedVoucherSell =
         await this.voucherSellModel.create(newVoucherSell);
