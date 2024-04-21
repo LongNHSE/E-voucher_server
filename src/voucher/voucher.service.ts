@@ -2,7 +2,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Voucher, VoucherDocument } from './schema/voucher.schema';
 import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { uploadImage } from 'src/common/util/FirebaseUtil';
 import { User, UserDocument } from 'src/user/schema/user.schema';
 import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
 

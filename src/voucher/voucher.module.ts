@@ -13,10 +13,11 @@ import {
   voucherSellSchema,
 } from 'src/voucher-sell/schema/voucher-sell.schema';
 import { voucherSellService } from 'src/voucher-sell/voucher-sell.service';
+import { FirebaseService } from 'src/auth/firebase/firebase.service';
 
 @Module({
   controllers: [VoucherController],
-  providers: [VoucherService, voucherSellService, UserService],
+  providers: [VoucherService, voucherSellService, UserService, FirebaseService],
   imports: [
     VoucherSellModule,
     MongooseModule.forFeature([

@@ -17,6 +17,9 @@ import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
     AuthModule,
     UserModule,
     VoucherModule,
@@ -25,7 +28,6 @@ import { ReportModule } from './report/report.module';
     TimeLimitModule,
     ReportModule,
     ReportTypeModule,
-    ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
     OtpModule,
     MailModule,
