@@ -71,10 +71,6 @@ export class voucherSellService {
     return await newVoucherSell.save();
   }
 
-  async findOne(query: any): Promise<VoucherSell> {
-    return await this.voucherSellModel.findOne(query).exec();
-  }
-
   async findOneById(id: string): Promise<VoucherSell> {
     return await this.voucherSellModel.findById(id).exec();
   }
