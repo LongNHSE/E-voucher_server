@@ -22,9 +22,9 @@ export class TimeLimitService {
   async create(timeLimit: TimeLimit): Promise<TimeLimit> {
     return await new this.timeLimitModel(timeLimit).save();
   }
-  async update(id: string, isActive: boolean): Promise<TimeLimit> {
+  async update(id: string, duration: number): Promise<TimeLimit> {
     return await this.timeLimitModel
-      .findByIdAndUpdate(id, { isActive }, { new: true })
+      .findByIdAndUpdate(id, { duration }, { new: true })
       .exec();
   }
 }

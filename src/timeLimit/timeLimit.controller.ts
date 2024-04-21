@@ -51,11 +51,11 @@ export class TimeLimitController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body('isActive') isActive: boolean,
+    @Body('duration') duration: number,
   ): Promise<ResponseObject> {
     const updatedTimeLimit: TimeLimit = await this.timeLimitService.update(
       id,
-      isActive,
+      duration,
     );
     if (!updatedTimeLimit) {
       return ResponseObject.badReqError("Can't update time limit");

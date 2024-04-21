@@ -25,11 +25,28 @@ export class ReportService {
   async findAll(): Promise<Report[]> {
     return await this.reportModel
       .find()
-      .populate('voucherSell')
+      .populate({
+        path: 'voucherSell',
+        populate: {
+          path: 'voucherId',
+        },
+      })
       .populate('reportType')
       .populate('user')
-      .populate('staff')
-      .exec();
+      .populate('staff');
+  }
+  async findByStaff(): Promise<Report[]> {
+    return await this.reportModel
+      .find({ staff: null, staffMessage: null })
+      .populate({
+        path: 'voucherSell',
+        populate: {
+          path: 'voucherId',
+        },
+      })
+      .populate('reportType')
+      .populate('user')
+      .populate('staff');
   }
   async findOne(id: string): Promise<Report> {
     return (await this.reportModel.findById(id))
