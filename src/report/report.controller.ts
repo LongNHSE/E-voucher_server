@@ -11,6 +11,12 @@ export class ReportController {
   async findAll(): Promise<ResponseObject> {
     return ResponseObject.success(await this.reportService.findAll());
   }
+
+  @Get('staff')
+  async findReportNotAnswered(): Promise<ResponseObject> {
+    return ResponseObject.success(await this.reportService.findByStaff());
+  }
+
   @Get(':id')
   async findOne(id: string): Promise<ResponseObject> {
     return ResponseObject.success(await this.reportService.findOne(id));
