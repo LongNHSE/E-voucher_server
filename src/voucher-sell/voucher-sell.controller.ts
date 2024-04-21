@@ -22,17 +22,29 @@ export class VoucherSellController {
   async create(@Body() voucherSell: VoucherSell): Promise<VoucherSell> {
     return this.voucherSellService.create(voucherSell);
   }
-  // @Get('QRCode')
-  // async QRCode(@Body() body: any) {
-  //   return this.voucherSellService.QRCode(body);
-  // }
+  @Post('generateQRCode')
+  async generateQRCode(@Body() body: any) {
+    console.log(body);
+    const { voucherId } = body;
+    console.log(voucherId);
+    let voucherSell = await this.voucherSellService.findOneById(voucherId);
+    if (!voucherSell) {
+      throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
+    }
+    voucherSell = await this.voucherSellService.generateQRCode(voucherId);
+    return {
+      statusCode: 200,
+      message: 'Voucher scanned successfully',
+      voucher: voucherSell,
+    };
+  }
 
   @Post('QRCode')
   async QRCode(@Body() body: any) {
     console.log(body);
     const { voucherId } = body;
     console.log(voucherId);
-    const voucherSell = await this.voucherSellService.findOneById(voucherId);
+    let voucherSell = await this.voucherSellService.findOneById(voucherId);
     if (!voucherSell) {
       throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
     }
@@ -45,6 +57,7 @@ export class VoucherSellController {
     // ) {
     //   throw new Error('Voucher has been expired');
     // }
+    voucherSell = await this.voucherSellService.ScanQRCode(voucherId);
     return {
       statusCode: 200,
       message: 'Voucher scanned successfully',

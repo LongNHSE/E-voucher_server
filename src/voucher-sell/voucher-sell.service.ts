@@ -36,4 +36,11 @@ export class voucherSellService {
       .findByIdAndUpdate(_id, { status: 'used' }, { new: true })
       .exec();
   }
+
+  async generateQRCode(_id: string): Promise<VoucherSell> {
+    return await this.voucherSellModel
+      .findByIdAndUpdate(_id, { generateAt: new Date() }, { new: true })
+      .populate('voucherId')
+      .exec();
+  }
 }
