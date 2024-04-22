@@ -18,6 +18,7 @@ import { VoucherService } from './voucher.service';
 import { ResponseObject } from 'src/common/ResponseObject';
 import { uploadImage } from 'src/common/util/FirebaseUtil';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { log } from 'console';
 @Controller('vouchers')
 export class VoucherController {
   constructor(private readonly voucherService: VoucherService) {}
@@ -48,7 +49,11 @@ export class VoucherController {
       staff,
     );
   }
-
+  @Get('totalQuantity')
+  async getTotalQuantity(): Promise<number> {
+    console.log('123123');
+    return await this.voucherService.calculateTotalQuantity();
+  }
   @Post('status')
   async findByVoucherStatus(
     @Body('status') statuses: string[],
