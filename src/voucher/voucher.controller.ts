@@ -41,6 +41,8 @@ export class VoucherController {
   ): Promise<Voucher[]> {
     console.log(query);
     const { name, category, code, status, host, staff } = query;
+    let { startSellTime, endSellTime } = query;
+
     console.log(name, category, code, status, host, staff);
     return this.voucherService.searchForUser(
       name,
@@ -49,6 +51,8 @@ export class VoucherController {
       status,
       host,
       staff,
+      startSellTime,
+      endSellTime,
     );
   }
 
