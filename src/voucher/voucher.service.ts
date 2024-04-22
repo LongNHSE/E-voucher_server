@@ -4,6 +4,7 @@ import { FilterQuery, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { User, UserDocument } from 'src/user/schema/user.schema';
 import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
+import { log } from 'console';
 
 @Injectable()
 export class VoucherService {
@@ -99,5 +100,24 @@ export class VoucherService {
         { new: true },
       )
       .exec();
+  }
+  async calculateTotalQuantity(): Promise<number> {
+    try {
+      const vouchers = await this.voucherModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalQuantity: { $sum: '$quantity' },
+          },
+        },
+      ]);
+      if (vouchers.length > 0) {
+        return vouchers[0].totalQuantity;
+      } else {
+        throw new Error('No vouchers found.');
+      }
+    } catch (error) {
+      throw new Error('Failed to calculate total quantity');
+    }
   }
 }

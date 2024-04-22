@@ -55,7 +55,11 @@ export class VoucherController {
       endSellTime,
     );
   }
-
+  @Get('totalQuantity')
+  async getTotalQuantity(): Promise<number> {
+    console.log('123123');
+    return await this.voucherService.calculateTotalQuantity();
+  }
   @Post('status')
   async findByVoucherStatus(
     @Body('status') statuses: string[],
