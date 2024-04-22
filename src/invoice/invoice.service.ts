@@ -6,7 +6,7 @@ import {
   VoucherSell,
   VoucherSellDocument,
 } from 'src/voucher-sell/schema/voucher-sell.schema';
-import { Voucher } from 'src/voucher/schema/voucher.schema';
+import { Voucher, VoucherDocument } from 'src/voucher/schema/voucher.schema';
 
 @Injectable()
 export class invoiceService {
@@ -15,6 +15,8 @@ export class invoiceService {
     private invoiceModel: Model<InvoiceDocument>,
     @InjectModel(VoucherSell.name)
     private voucherSellModel: Model<VoucherSellDocument>,
+    @InjectModel(Voucher.name)
+    private voucherModel: Model<VoucherDocument>,
   ) {}
 
   async findAll(): Promise<Invoice[]> {
@@ -55,6 +57,12 @@ export class invoiceService {
     newInvoice.total = total;
 
     const savedInvoice = await this.invoiceModel.create(newInvoice);
+
+    const voucher = await this.voucherModel.findOne({ _id: voucherId });
+
+    voucher.quantity = voucher.quantity - quantity;
+
+    await voucher.save();
 
     return savedInvoice;
   }
