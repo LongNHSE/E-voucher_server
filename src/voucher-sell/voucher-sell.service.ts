@@ -41,12 +41,22 @@ export class voucherSellService {
   async findByUserIdAndVoucherId(
     userId: string,
     voucherId: string,
+    status: string = 'pending',
   ): Promise<VoucherSell[]> {
-    if (userId && !voucherId) return this.findByUserId(userId);
-    else if (!userId && voucherId) return this.findByVoucherId(voucherId);
+    console.log('----', userId, voucherId, status);
+    if (userId && !voucherId)
+      return this.voucherSellModel
+        .find({ userId, status })
+        .populate('userId')
+        .populate('voucherId');
+    else if (!userId && voucherId)
+      return this.voucherSellModel
+        .find({ voucherId, status })
+        .populate('userId')
+        .populate('voucherId');
     else
       return this.voucherSellModel
-        .find({ userId, voucherId })
+        .find({ userId, voucherId, status })
         .populate('userId')
         .populate('voucherId');
   }

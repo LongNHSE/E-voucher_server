@@ -28,8 +28,13 @@ export class VoucherSellController {
   async findByUserIdAndVoucherId(
     @Query('userId') userId: string,
     @Query('voucherId') voucherId: string,
+    @Query('status') status: string,
   ): Promise<VoucherSell[]> {
-    return this.voucherSellService.findByUserIdAndVoucherId(userId, voucherId);
+    return this.voucherSellService.findByUserIdAndVoucherId(
+      userId,
+      voucherId,
+      status,
+    );
   }
 
   @Get()
