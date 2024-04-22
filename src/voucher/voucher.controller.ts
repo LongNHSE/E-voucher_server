@@ -16,12 +16,14 @@ import {
 import { Voucher } from './schema/voucher.schema';
 import { VoucherService } from './voucher.service';
 import { ResponseObject } from 'src/common/ResponseObject';
-import { uploadImage } from 'src/common/util/FirebaseUtil';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { log } from 'console';
+import { FirebaseService } from 'src/auth/firebase/firebase.service';
 @Controller('vouchers')
 export class VoucherController {
-  constructor(private readonly voucherService: VoucherService) {}
+  constructor(
+    private readonly voucherService: VoucherService,
+    private readonly firebaseService: FirebaseService,
+  ) {}
 
   @Get()
   async findAll(): Promise<Voucher[]> {
@@ -39,6 +41,8 @@ export class VoucherController {
   ): Promise<Voucher[]> {
     console.log(query);
     const { name, category, code, status, host, staff } = query;
+    let { startSellTime, endSellTime } = query;
+
     console.log(name, category, code, status, host, staff);
     return this.voucherService.searchForUser(
       name,
@@ -47,6 +51,8 @@ export class VoucherController {
       status,
       host,
       staff,
+      startSellTime,
+      endSellTime,
     );
   }
   @Get('totalQuantity')
@@ -115,7 +121,7 @@ export class VoucherController {
     file: Express.Multer.File,
   ): Promise<ResponseObject> {
     console.log(file);
-    const updateVoucherImage = await uploadImage(file);
+    const updateVoucherImage = await this.firebaseService.uploadImage(file);
     if (!updateVoucherImage)
       return ResponseObject.badReqError("Can't update voucher image");
     return ResponseObject.success(updateVoucherImage);

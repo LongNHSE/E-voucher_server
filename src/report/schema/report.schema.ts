@@ -15,28 +15,28 @@ export type ReportDocument = Report & Document;
 export class Report {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'voucherSell',
+    ref: 'VoucherSell',
     required: true,
   })
   voucherSell: VoucherSell;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'reportType',
+    ref: 'ReportType',
     required: true,
   })
   reportType: ReportType;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   staff: User;
 
   @Prop({ required: true })
   userMessage: string;
 
-  @Prop({ required: true })
+  @Prop()
   staffMessage: string;
 }
 export const ReportSchema = SchemaFactory.createForClass(Report);
