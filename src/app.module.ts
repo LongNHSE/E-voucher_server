@@ -14,6 +14,7 @@ import { TimeLimitModule } from './timeLimit/timeLimit.module';
 import { ReportTypeModule } from './reportType/reportType.module';
 import { VnpayController } from './vnpay/vnpay.controller';
 import { ReportModule } from './report/report.module';
+import { SocketModule } from './gateway/socket.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ReportModule } from './report/report.module';
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
     OtpModule,
     MailModule,
+    SocketModule,
   ],
   controllers: [AppController, VnpayController],
   providers: [AppService],

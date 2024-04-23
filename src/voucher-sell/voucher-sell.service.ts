@@ -41,12 +41,22 @@ export class voucherSellService {
   async findByUserIdAndVoucherId(
     userId: string,
     voucherId: string,
+    status: string = 'pending',
   ): Promise<VoucherSell[]> {
-    if (userId && !voucherId) return this.findByUserId(userId);
-    else if (!userId && voucherId) return this.findByVoucherId(voucherId);
+    console.log('----', userId, voucherId, status);
+    if (userId && !voucherId)
+      return this.voucherSellModel
+        .find({ userId, status })
+        .populate('userId')
+        .populate('voucherId');
+    else if (!userId && voucherId)
+      return this.voucherSellModel
+        .find({ voucherId, status })
+        .populate('userId')
+        .populate('voucherId');
     else
       return this.voucherSellModel
-        .find({ userId, voucherId })
+        .find({ userId, voucherId, status })
         .populate('userId')
         .populate('voucherId');
   }
@@ -72,7 +82,10 @@ export class voucherSellService {
   }
 
   async findOneById(id: string): Promise<VoucherSell> {
-    return await this.voucherSellModel.findById(id).exec();
+    return await this.voucherSellModel
+      .findById(id)
+      .populate('voucherId')
+      .exec();
   }
 
   async ScanQRCode(_id: string): Promise<VoucherSell> {
@@ -82,8 +95,13 @@ export class voucherSellService {
   }
 
   async generateQRCode(_id: string): Promise<VoucherSell> {
+    const randowNumber = Math.floor(Math.random() * 1000000);
     return await this.voucherSellModel
-      .findByIdAndUpdate(_id, { generateAt: new Date() }, { new: true })
+      .findByIdAndUpdate(
+        _id,
+        { generateAt: new Date(), hash: randowNumber },
+        { new: true },
+      )
       .populate('voucherId')
       .exec();
   }
