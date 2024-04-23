@@ -48,5 +48,21 @@ export class SocketGateway {
     }
   }
 
+  @SubscribeMessage('generateQRCode')
+  joinRoom(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    console.log('--------data', data.hash);
+    client.join(data.hash);
+    console.log(`Client ${client.id} joined room ${data.hash}`);
+  }
+
+  @SubscribeMessage('QRCode')
+  handleScanQRCode(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ) {
+    console.log('Scanned QR code:', data);
+    client.to(data.hash).emit('QRCodeScanned', data);
+  }
+
   // Implement other Socket.IO event handlers and message handlers
 }
