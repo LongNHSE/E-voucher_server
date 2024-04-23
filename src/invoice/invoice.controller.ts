@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseFilters } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseFilters,
+} from '@nestjs/common';
 import { invoiceService } from './invoice.service';
 import { Invoice } from './schema/invoice.schema';
 import { MongooseExceptionFilter } from 'src/filters/mongoose-exception.filter';
@@ -27,5 +35,16 @@ export class invoiceController {
       quantity,
       giftUserId,
     );
+  }
+
+  @Get('totalRevenue') // Define route path without parameter in URL path
+  async getTotalRevenue(
+    @Query('hostId') hostId: string, // Extract hostId from query string
+  ): Promise<{ totalRevenue: number }> {
+    console.log('hostId:', hostId); // Place console.log() statement here
+
+    const totalRevenue =
+      await this.invoiceService.getTotalRevenueForHost(hostId);
+    return { totalRevenue };
   }
 }

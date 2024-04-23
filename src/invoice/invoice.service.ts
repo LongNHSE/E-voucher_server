@@ -7,6 +7,7 @@ import {
   VoucherSellDocument,
 } from 'src/voucher-sell/schema/voucher-sell.schema';
 import { Voucher, VoucherDocument } from 'src/voucher/schema/voucher.schema';
+import { log } from 'console';
 
 @Injectable()
 export class invoiceService {
@@ -20,7 +21,14 @@ export class invoiceService {
   ) {}
 
   async findAll(): Promise<Invoice[]> {
-    return await this.invoiceModel.find().populate('VoucherSell').exec();
+    return await this.invoiceModel
+      .find()
+      .populate('VoucherSell')
+      .populate({
+        path: 'VoucherSell',
+        populate: { path: 'voucherId' },
+      })
+      .exec();
   }
 
   async purchase(
@@ -65,5 +73,46 @@ export class invoiceService {
     await voucher.save();
 
     return savedInvoice;
+  }
+  async getTotalRevenueForHost(hostId: string): Promise<number> {
+    const totalRevenueResult = await this.invoiceModel.aggregate([
+      {
+        $lookup: {
+          from: 'vouchersells',
+          localField: 'VoucherSell',
+          foreignField: '_id',
+          as: 'voucherSells',
+        },
+      },
+      {
+        $unwind: '$voucherSells',
+      },
+      {
+        $lookup: {
+          from: 'vouchers',
+          localField: 'voucherSells.voucherId',
+          foreignField: '_id',
+          as: 'voucher',
+        },
+      },
+      {
+        $unwind: '$voucher',
+      },
+      {
+        $match: {
+          'voucher.host': new mongoose.Types.ObjectId(hostId),
+        },
+      },
+
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: '$total' },
+        },
+      },
+    ]);
+    return totalRevenueResult.length > 0
+      ? totalRevenueResult[0].totalRevenue
+      : 0;
   }
 }

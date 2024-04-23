@@ -56,9 +56,8 @@ export class VoucherController {
     );
   }
   @Get('totalQuantity')
-  async getTotalQuantity(): Promise<number> {
-    console.log('123123');
-    return await this.voucherService.calculateTotalQuantity();
+  async getTotalQuantity(@Query('hostId') hostId: string): Promise<number> {
+    return await this.voucherService.calculateTotalQuantity(hostId);
   }
   @Post('status')
   async findByVoucherStatus(

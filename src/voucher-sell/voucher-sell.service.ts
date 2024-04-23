@@ -55,7 +55,7 @@ export class voucherSellService {
     return await this.voucherSellModel
       .find()
       .populate('userId')
-      .populate('voucherId')
+      .populate('voucherId')  
       .exec();
   }
 

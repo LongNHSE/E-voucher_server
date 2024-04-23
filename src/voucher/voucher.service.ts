@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Voucher, VoucherDocument } from './schema/voucher.schema';
 import { FilterQuery, Model } from 'mongoose';
+import mongoose from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { User, UserDocument } from 'src/user/schema/user.schema';
 import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
@@ -101,9 +102,14 @@ export class VoucherService {
       )
       .exec();
   }
-  async calculateTotalQuantity(): Promise<number> {
+  async calculateTotalQuantity(hostId: string): Promise<number> {
     try {
       const vouchers = await this.voucherModel.aggregate([
+        {
+          $match: {
+            host: new mongoose.Types.ObjectId(hostId),
+          },
+        },
         {
           $group: {
             _id: null,
@@ -111,11 +117,9 @@ export class VoucherService {
           },
         },
       ]);
-      if (vouchers.length > 0) {
-        return vouchers[0].totalQuantity;
-      } else {
-        throw new Error('No vouchers found.');
-      }
+      console.log(vouchers);
+
+      return vouchers.length > 0 ? vouchers[0].totalQuantity : 0;
     } catch (error) {
       throw new Error('Failed to calculate total quantity');
     }
