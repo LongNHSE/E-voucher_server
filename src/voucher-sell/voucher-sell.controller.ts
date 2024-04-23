@@ -69,35 +69,33 @@ export class VoucherSellController {
   // Use to scan QR code and update status of voucher
   @Post('QRCode')
   async QRCode(@Body() body: any) {
-    // const { voucherId, hash } = body;
-    // console.log(voucherId, hash);
-    // if (!voucherId || !hash) {
-    //   throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
-    // }
-    // let voucherSell = await this.voucherSellService.findOneById(voucherId);
-    // if (!voucherSell) {
-    //   throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
-    // }
-    // if (voucherSell.status === 'used') {
-    //   throw new HttpException('Voucher has been used', HttpStatus.CONFLICT);
-    // }
-    // if (
-    //   voucherSell.status === 'pending' &&
-    //   voucherSell.generateAt.getTime() + 1000 * 60 * 5 < new Date().getTime()
-    // ) {
-    //   throw new Error('Voucher has been expired');
-    // }
-    // if (voucherSell.hash !== hash) {
-    //   throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
-    // }
-    // voucherSell = await this.voucherSellService.ScanQRCode(voucherId);
-    // return {
-    //   statusCode: 200,
-    //   message: 'Voucher scanned successfully',
-    //   voucher: voucherSell,
-    // };
-    // const { voucherId, hash } = body;
-    // this.socketService.emit('QRScanned', { voucherId, hash });
+    const { voucherId, hash } = body;
+    console.log(voucherId, hash);
+    if (!voucherId || !hash) {
+      throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
+    }
+    let voucherSell = await this.voucherSellService.findOneById(voucherId);
+    if (!voucherSell) {
+      throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
+    }
+    if (voucherSell.status === 'used') {
+      throw new HttpException('Voucher has been used', HttpStatus.CONFLICT);
+    }
+    if (
+      voucherSell.status === 'pending' &&
+      voucherSell.generateAt.getTime() + 1000 * 60 * 5 < new Date().getTime()
+    ) {
+      throw new Error('Voucher has been expired');
+    }
+    if (voucherSell.hash !== hash) {
+      throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
+    }
+    voucherSell = await this.voucherSellService.ScanQRCode(voucherId);
+    return {
+      statusCode: 200,
+      message: 'Voucher scanned successfully',
+      voucher: voucherSell,
+    };
   }
 
   @Get(':id')
