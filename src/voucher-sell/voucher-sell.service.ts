@@ -48,17 +48,20 @@ export class voucherSellService {
       return this.voucherSellModel
         .find({ userId, status })
         .populate('userId')
-        .populate('voucherId');
+        .populate('voucherId')
+        .sort('-createdAt');
     else if (!userId && voucherId)
       return this.voucherSellModel
         .find({ voucherId, status })
         .populate('userId')
-        .populate('voucherId');
+        .populate('voucherId')
+        .sort('-createdAt');
     else
       return this.voucherSellModel
         .find({ userId, voucherId, status })
         .populate('userId')
-        .populate('voucherId');
+        .populate('voucherId')
+        .sort('-createdAt');
   }
 
   async findAll(): Promise<VoucherSell[]> {
