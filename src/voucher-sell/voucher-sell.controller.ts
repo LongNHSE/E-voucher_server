@@ -12,10 +12,14 @@ import {
 import { VoucherSell } from './schema/voucher-sell.schema';
 import { voucherSellService } from './voucher-sell.service';
 import { Voucher } from 'src/voucher/schema/voucher.schema';
+import { SocketService } from './../gateway/socket.service';
 
 @Controller('voucherSell')
 export class VoucherSellController {
-  constructor(private readonly voucherSellService: voucherSellService) {}
+  constructor(
+    private readonly voucherSellService: voucherSellService,
+    private readonly socketService: SocketService,
+  ) {}
 
   @Get('voucherByUserId')
   async findVoucherByUserId(
@@ -48,14 +52,13 @@ export class VoucherSellController {
   }
   @Post('generateQRCode')
   async generateQRCode(@Body() body: any) {
-    console.log(body);
     const { voucherId } = body;
-    console.log(voucherId);
     let voucherSell = await this.voucherSellService.findOneById(voucherId);
     if (!voucherSell) {
       throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
     }
     voucherSell = await this.voucherSellService.generateQRCode(voucherId);
+    // this.socketService.handleJoinRoom
     return {
       statusCode: 200,
       message: 'Voucher scanned successfully',
@@ -63,30 +66,38 @@ export class VoucherSellController {
     };
   }
 
+  // Use to scan QR code and update status of voucher
   @Post('QRCode')
   async QRCode(@Body() body: any) {
-    console.log(body);
-    const { voucherId } = body;
-    console.log(voucherId);
-    let voucherSell = await this.voucherSellService.findOneById(voucherId);
-    if (!voucherSell) {
-      throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
-    }
-    if (voucherSell.status === 'used') {
-      throw new HttpException('Voucher has been used', HttpStatus.CONFLICT);
-    }
+    // const { voucherId, hash } = body;
+    // console.log(voucherId, hash);
+    // if (!voucherId || !hash) {
+    //   throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
+    // }
+    // let voucherSell = await this.voucherSellService.findOneById(voucherId);
+    // if (!voucherSell) {
+    //   throw new HttpException('Voucher not found', HttpStatus.CONFLICT);
+    // }
+    // if (voucherSell.status === 'used') {
+    //   throw new HttpException('Voucher has been used', HttpStatus.CONFLICT);
+    // }
     // if (
     //   voucherSell.status === 'pending' &&
     //   voucherSell.generateAt.getTime() + 1000 * 60 * 5 < new Date().getTime()
     // ) {
     //   throw new Error('Voucher has been expired');
     // }
-    voucherSell = await this.voucherSellService.ScanQRCode(voucherId);
-    return {
-      statusCode: 200,
-      message: 'Voucher scanned successfully',
-      voucher: voucherSell,
-    };
+    // if (voucherSell.hash !== hash) {
+    //   throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
+    // }
+    // voucherSell = await this.voucherSellService.ScanQRCode(voucherId);
+    // return {
+    //   statusCode: 200,
+    //   message: 'Voucher scanned successfully',
+    //   voucher: voucherSell,
+    // };
+    // const { voucherId, hash } = body;
+    // this.socketService.emit('QRScanned', { voucherId, hash });
   }
 
   @Get(':id')
