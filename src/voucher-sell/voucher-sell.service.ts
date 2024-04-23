@@ -1,10 +1,11 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { VoucherSell, VoucherSellDocument } from './schema/voucher-sell.schema';
 import { VoucherService } from 'src/voucher/voucher.service';
 import { User, UserDocument } from 'src/user/schema/user.schema';
 import { Voucher, VoucherDocument } from 'src/voucher/schema/voucher.schema';
+import { log } from 'console';
 
 @Injectable()
 export class voucherSellService {
@@ -117,5 +118,29 @@ export class voucherSellService {
 
   async delete(id: string): Promise<VoucherSell> {
     return await this.voucherSellModel.findByIdAndDelete(id);
+  }
+
+  async getTotalVoucherSellsByHostId(hostId: string): Promise<number> {
+    console.log(hostId)
+    const totalVoucherSells = await this.voucherSellModel.aggregate([
+      {
+        $lookup: {
+          from: 'vouchers',
+          localField: 'voucherId',
+          foreignField: '_id',
+          as: 'voucher',
+        },
+      },
+      {
+        $match: {
+          'voucher.host': new mongoose.Types.ObjectId(hostId),
+        },
+      },
+      {
+        $count: 'total',
+      },
+    ]);
+
+    return totalVoucherSells.length > 0 ? totalVoucherSells[0].total : 0;
   }
 }

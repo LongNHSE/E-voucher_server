@@ -88,6 +88,10 @@ export class VoucherController {
   ): Promise<Voucher> {
     return this.voucherService.update(id, voucher);
   }
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<Voucher> {
+    return this.voucherService.delete(id);
+  }
 
   @Patch(':id/status')
   async updateVoucherStatus(

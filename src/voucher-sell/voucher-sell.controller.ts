@@ -21,6 +21,13 @@ export class VoucherSellController {
     private readonly socketService: SocketService,
   ) {}
 
+  @Get('totalVoucherSell')
+  async getTotalVoucherSellByHostId(
+    @Query('hostId') hostId: string,
+  ): Promise<number> {
+    return this.voucherSellService.getTotalVoucherSellsByHostId(hostId);
+  }
+
   @Get('voucherByUserId')
   async findVoucherByUserId(
     @Query('userId') userId: string,
