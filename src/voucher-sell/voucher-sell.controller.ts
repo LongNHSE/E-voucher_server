@@ -85,10 +85,14 @@ export class VoucherSellController {
       voucherSell.status === 'pending' &&
       voucherSell.generateAt.getTime() + 1000 * 60 * 5 < new Date().getTime()
     ) {
-      throw new Error('Voucher has been expired');
+      throw new Error('QR code has been expired');
     }
     if (voucherSell.hash !== hash) {
       throw new HttpException('Invalid QRCode', HttpStatus.CONFLICT);
+    }
+    console.log((voucherSell.voucherId as Voucher).endUseTime);
+    if ((voucherSell.voucherId as Voucher).endUseTime < new Date()) {
+      throw new HttpException('Voucher has expired', HttpStatus.CONFLICT);
     }
     voucherSell = await this.voucherSellService.ScanQRCode(voucherId);
     return {
