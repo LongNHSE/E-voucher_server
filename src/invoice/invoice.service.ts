@@ -39,15 +39,18 @@ export class invoiceService {
   ): Promise<Invoice> {
     const newVoucherSells: VoucherSell[] = [];
     let total = 0;
+    console.log('quantity', quantity);
 
     for (let i: number = 0; i < quantity; i++) {
       const newVoucherSell: VoucherSell = new this.voucherSellModel();
       newVoucherSell.userId = new mongoose.Types.ObjectId(userId);
       newVoucherSell.voucherId = new mongoose.Types.ObjectId(voucherId);
+      console.log('time', i);
 
       if (giftUserId) {
         newVoucherSell.giftUserId = new mongoose.Types.ObjectId(giftUserId);
       }
+      console.log('---newvouchersell', newVoucherSell);
 
       const savedVoucherSell =
         await this.voucherSellModel.create(newVoucherSell);
@@ -69,6 +72,7 @@ export class invoiceService {
     const voucher = await this.voucherModel.findOne({ _id: voucherId });
 
     voucher.quantity = voucher.quantity - quantity;
+    console.log('----voucher quantity', voucher.quantity);
 
     await voucher.save();
 
