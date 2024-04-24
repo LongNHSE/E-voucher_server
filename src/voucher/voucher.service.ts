@@ -6,6 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { User, UserDocument } from 'src/user/schema/user.schema';
 import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
 import { log } from 'console';
+import e from 'express';
 
 @Injectable()
 export class VoucherService {
@@ -22,15 +23,9 @@ export class VoucherService {
     status: string,
     host: string,
     staff: string,
-    startSellTime: Date,
-    endSellTime: Date,
+    startSellTime: Date = new Date(),
+    endSellTime: Date = new Date(),
   ): Promise<Voucher[]> {
-    startSellTime
-      ? (startSellTime = new Date(startSellTime))
-      : (startSellTime = new Date());
-    endSellTime
-      ? (endSellTime = new Date(endSellTime))
-      : (endSellTime = new Date());
     console.log(
       name,
       category,
@@ -54,7 +49,25 @@ export class VoucherService {
       endSellTime: { $gte: endSellTime },
     };
     console.log(filterQuery);
-    return await this.voucherModel.find(filterQuery).sort({ createdAt: -1 });
+    const vouchers = await this.voucherModel
+      .find(filterQuery)
+      .sort({ createdAt: -1 });
+    return vouchers.filter((voucher) => {
+      if (
+        voucher.startSellTime.getTime() <= new Date().getTime() &&
+        voucher.endSellTime.getTime() >= new Date().getTime()
+      ) {
+        console.log(
+          'start',
+          voucher.startSellTime.getTime() - new Date().getTime(),
+        );
+        console.log('true');
+        return true;
+      } else {
+        console.log('false');
+        return false;
+      }
+    });
   }
 
   async findAll(): Promise<Voucher[]> {
