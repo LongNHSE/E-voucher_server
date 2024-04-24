@@ -78,45 +78,72 @@ export class invoiceService {
 
     return savedInvoice;
   }
-  async getTotalRevenueForHost(hostId: string): Promise<number> {
-    const totalRevenueResult = await this.invoiceModel.aggregate([
-      {
-        $lookup: {
-          from: 'vouchersells',
-          localField: 'VoucherSell',
-          foreignField: '_id',
-          as: 'voucherSells',
-        },
-      },
-      {
-        $unwind: '$voucherSells',
-      },
-      {
-        $lookup: {
-          from: 'vouchers',
-          localField: 'voucherSells.voucherId',
-          foreignField: '_id',
-          as: 'voucher',
-        },
-      },
-      {
-        $unwind: '$voucher',
-      },
-      {
-        $match: {
-          'voucher.host': new mongoose.Types.ObjectId(hostId),
-        },
-      },
+  // async getTotalRevenueForHost(hostId: string): Promise<number> {
+  //   const totalRevenueResult = await this.invoiceModel.aggregate([
+  //     {
+  //       $lookup: {
+  //         from: 'vouchersells',
+  //         localField: 'VoucherSell',
+  //         foreignField: '_id',
+  //         as: 'voucherSells',
+  //       },
+  //     },
+  //     {
+  //       $unwind: '$voucherSells',
+  //     },
+  //     {
+  //       $lookup: {
+  //         from: 'vouchers',
+  //         localField: 'voucherSells.voucherId',
+  //         foreignField: '_id',
+  //         as: 'voucher',
+  //       },
+  //     },
+  //     {
+  //       $unwind: '$voucher',
+  //     },
+  //     {
+  //       $match: {
+  //         'voucher.host': new mongoose.Types.ObjectId(hostId),
+  //       },
+  //     },
 
-      {
-        $group: {
-          _id: null,
-          totalRevenue: { $sum: '$total' },
-        },
+  //     {
+  //       $group: {
+  //         _id: null,
+  //         totalRevenue: { $sum: '$total' },
+  //       },
+  //     },
+  //   ]);
+  //   return totalRevenueResult.length > 0
+  //     ? totalRevenueResult[0].totalRevenue
+  //     : 0;
+  // }
+  async getTotalRevenueForHost(hostId: string): Promise<number> {
+    const invoices = await this.invoiceModel.find().populate({
+      path: 'VoucherSell',
+      populate: {
+        path: 'voucherId',
       },
-    ]);
-    return totalRevenueResult.length > 0
-      ? totalRevenueResult[0].totalRevenue
-      : 0;
+    });
+
+    const totalRevenue = invoices.reduce((total, invoice) => {
+      const revenueForInvoice = invoice.VoucherSell.reduce(
+        (totalForVoucherSell, voucherSell) => {
+          if (voucherSell.voucherId instanceof mongoose.Types.ObjectId) {
+            return totalForVoucherSell;
+          }
+          const voucher = voucherSell.voucherId as Voucher;
+          if (voucher.host.toString() === hostId) {
+            return totalForVoucherSell + voucherSell.voucherId.price;
+          }
+          return totalForVoucherSell;
+        },
+        0,
+      );
+      return total + revenueForInvoice;
+    }, 0);
+
+    return totalRevenue;
   }
 }
