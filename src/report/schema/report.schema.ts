@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { ReportType } from 'src/reportType/schema/reportType.schema';
 import { User } from 'src/user/schema/user.schema';
 import { VoucherSell } from 'src/voucher-sell/schema/voucher-sell.schema';
+import { Voucher } from 'src/voucher/schema/voucher.schema';
 
 export type ReportDocument = Report & Document;
 @Schema({
@@ -19,6 +20,12 @@ export class Report {
     required: true,
   })
   voucherSell: VoucherSell;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Voucher',
+    required: true,
+  })
+  voucher: Voucher;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

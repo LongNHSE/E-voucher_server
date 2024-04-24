@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ReportType } from './schema/reportType.schema';
 import { ReportTypeService } from './reportType.service';
 import { ResponseObject } from 'src/common/ResponseObject';
