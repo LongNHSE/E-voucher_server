@@ -31,6 +31,7 @@ export class ReportService {
           path: 'voucherId',
         },
       })
+      .populate('voucher')
       .populate('reportType')
       .populate('user')
       .populate('staff');
